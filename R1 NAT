@@ -1,0 +1,146 @@
+R1 (NAT)
+********
+
+R1#sh run
+Building configuration...
+
+Current configuration : 1939 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+interface Loopback1
+ ip address 10.1.1.1 255.255.255.0
+!
+interface Loopback2
+ ip address 10.1.2.1 255.255.255.0
+!
+interface Loopback3
+ ip address 10.1.3.1 255.255.255.0
+!
+interface Loopback4
+ ip address 10.1.4.1 255.255.255.0
+!
+interface Loopback5
+ ip address 10.1.5.1 255.255.255.0
+!
+interface FastEthernet0/0
+ ip address dhcp client-id FastEthernet0/0
+ ip nat outside
+ speed auto
+ duplex auto
+!
+interface FastEthernet0/1
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface GigabitEthernet1/0
+ ip address 172.27.0.1 255.255.255.0
+ ip nat inside
+ ip ospf priority 100
+ ip ospf 1 area 0
+ negotiation auto
+!
+interface Serial2/0
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial2/1
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial2/2
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial2/3
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+router ospf 1
+ router-id 1.1.1.1
+ passive-interface FastEthernet0/0
+ network 0.0.0.0 255.255.255.255 area 0
+ default-information originate always
+!
+ip nat inside source list INTERNET interface FastEthernet0/0 overload
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 192.168.122.1
+!
+ip access-list standard INTERNET
+ permit 10.1.1.1
+ permit 60.1.0.0 0.0.255.255
+ permit 172.27.0.0 0.0.0.255
+ permit 80.1.0.0 0.0.255.255
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end
+
+R1#
+R1#sh ip ospf interface brief
+Interface    PID   Area            IP Address/Mask    Cost  State Nbrs F/C
+Lo1          1     0               10.1.1.1/24        1     LOOP  0/0
+Lo2          1     0               10.1.2.1/24        1     LOOP  0/0
+Lo3          1     0               10.1.3.1/24        1     LOOP  0/0
+Lo4          1     0               10.1.4.1/24        1     LOOP  0/0
+Lo5          1     0               10.1.5.1/24        1     LOOP  0/0
+Fa0/0        1     0               192.168.122.130/24 1     DR    0/0
+Gi1/0        1     0               172.27.0.1/24      1     DR    4/4
+R1#
+R1#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+2.2.2.2          50   FULL/BDR        00:00:33    172.27.0.2      GigabitEthernet1/0
+3.3.3.3           0   FULL/DROTHER    00:00:38    172.27.0.3      GigabitEthernet1/0
+4.4.4.4           0   FULL/DROTHER    00:00:38    172.27.0.4      GigabitEthernet1/0
+5.5.5.5           1   FULL/DROTHER    00:00:39    172.27.0.5      GigabitEthernet1/0
+R1#
