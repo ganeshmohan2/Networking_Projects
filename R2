@@ -1,0 +1,138 @@
+
+R2#sh run
+Building configuration...
+
+Current configuration : 1702 bytes
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+!
+hostname R2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!
+!
+!
+!
+!
+!
+no ip domain lookup
+ip cef
+no ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip tcp synwait-time 5
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 2.2.2.2 255.255.255.0
+!
+interface FastEthernet0/0
+ no ip address
+ shutdown
+ speed auto
+ duplex auto
+!
+interface FastEthernet0/1
+ ip address 172.27.62.1 255.255.255.252
+ speed auto
+ duplex auto
+!
+interface GigabitEthernet1/0
+ ip address 172.27.0.2 255.255.255.0
+ ip ospf priority 50
+ ip ospf 1 area 0
+ negotiation auto
+!
+interface Serial2/0
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial2/1
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial2/2
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+interface Serial2/3
+ no ip address
+ shutdown
+ serial restart-delay 0
+!
+!
+router eigrp 100
+ network 2.2.2.2 0.0.0.0
+ network 172.27.62.1 0.0.0.0
+ redistribute ospf 1 metric 1 1 1 1 1
+!
+router ospf 1
+ router-id 2.2.2.2
+ summary-address 60.1.0.0 255.255.248.0
+ redistribute eigrp 100 subnets route-map EIGRP_PREFIX
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+ip prefix-list EIGRP_NET seq 5 deny 60.1.8.0/24
+ip prefix-list EIGRP_NET seq 10 permit 0.0.0.0/0 le 32
+!
+route-map EIGRP_PREFIX permit 10
+ match ip address prefix-list EIGRP_NET
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+end
+
