@@ -124,6 +124,10 @@ line vty 0 4
 !
 !
 end
+R1#sh ip nat translations
+Pro Inside global      Inside local       Outside local      Outside global
+icmp 192.168.122.130:1024 172.27.0.2:0    8.8.8.8:0          8.8.8.8:1024
+R1#
 
 R1#
 R1#sh ip ospf interface brief
