@@ -10,10 +10,6 @@
  
  ![image](https://github.com/Dhananetwork/Networking_Projects/assets/159283500/e05c0d1e-26ce-478d-bd64-eb68986263b8)
 
-<h3 align="center"> L2 Switching Topology </h3>
-
- ![image](https://github.com/Dhananetwork/Networking_Projects/assets/159283500/1ba0de57-f048-451f-9f8a-d67693459f03)
-
   <h3 align="center">IPSec VPN using BGP Routing </h3>
  
   ![image](https://github.com/Dhananetwork/Networking_Projects/assets/159283500/e9af6298-9976-40f9-a238-a8da23f83011)
