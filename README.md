@@ -2,7 +2,7 @@
  
 ![image](https://github.com/Dhananetwork/Networking_Projects/assets/159283500/eaad7b01-c9ef-413d-b84c-72401e2ac4d0)
 
- <h3 align="center"> IBGP Confederation Topology </h3>
+ <h3 align="center"> IBGP Topology </h3>
  
  ![image](https://github.com/Dhananetwork/Networking_Projects/assets/159283500/840c354c-2a96-4576-8e84-088f1318968f)
 
